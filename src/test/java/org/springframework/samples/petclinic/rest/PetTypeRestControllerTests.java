@@ -95,7 +95,7 @@ class PetTypeRestControllerTests {
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
     void testGetPetTypeSuccessAsOwnerAdmin() throws Exception {
-    	given(this.clinicService.findPetTypeById(1)).willReturn(petTypes.get(0));
+    	given(this.clinicService.findPetTypeById(1)).willReturn(petTypes.getFirst());
         this.mockMvc.perform(get("/api/pettypes/1")
         	.accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
@@ -107,7 +107,7 @@ class PetTypeRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testGetPetTypeSuccessAsVetAdmin() throws Exception {
-        given(this.clinicService.findPetTypeById(1)).willReturn(petTypes.get(0));
+        given(this.clinicService.findPetTypeById(1)).willReturn(petTypes.getFirst());
         this.mockMvc.perform(get("/api/pettypes/1")
             .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
@@ -128,7 +128,7 @@ class PetTypeRestControllerTests {
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
     void testGetAllPetTypesSuccessAsOwnerAdmin() throws Exception {
-    	petTypes.remove(0);
+    	petTypes.removeFirst();
     	petTypes.remove(1);
     	given(this.clinicService.findAllPetTypes()).willReturn(petTypes);
         this.mockMvc.perform(get("/api/pettypes/")
@@ -144,7 +144,7 @@ class PetTypeRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testGetAllPetTypesSuccessAsVetAdmin() throws Exception {
-        petTypes.remove(0);
+        petTypes.removeFirst();
         petTypes.remove(1);
         given(this.clinicService.findAllPetTypes()).willReturn(petTypes);
         this.mockMvc.perform(get("/api/pettypes/")
@@ -170,7 +170,7 @@ class PetTypeRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testCreatePetTypeSuccess() throws Exception {
-    	PetType newPetType = petTypes.get(0);
+    	PetType newPetType = petTypes.getFirst();
     	newPetType.setId(999);
     	ObjectMapper mapper = new ObjectMapper();
         String newPetTypeAsJSON = mapper.writeValueAsString(petTypeMapper.toPetTypeDto(newPetType));
@@ -182,7 +182,7 @@ class PetTypeRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testCreatePetTypeError() throws Exception {
-    	PetType newPetType = petTypes.get(0);
+    	PetType newPetType = petTypes.getFirst();
     	newPetType.setId(null);
     	newPetType.setName(null);
     	ObjectMapper mapper = new ObjectMapper();
@@ -216,7 +216,7 @@ class PetTypeRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testUpdatePetTypeError() throws Exception {
-    	PetType newPetType = petTypes.get(0);
+    	PetType newPetType = petTypes.getFirst();
     	newPetType.setName("");
     	ObjectMapper mapper = new ObjectMapper();
         String newPetTypeAsJSON = mapper.writeValueAsString(petTypeMapper.toPetTypeDto(newPetType));
@@ -228,10 +228,10 @@ class PetTypeRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testDeletePetTypeSuccess() throws Exception {
-    	PetType newPetType = petTypes.get(0);
+    	PetType newPetType = petTypes.getFirst();
     	ObjectMapper mapper = new ObjectMapper();
     	String newPetTypeAsJSON = mapper.writeValueAsString(newPetType);
-    	given(this.clinicService.findPetTypeById(1)).willReturn(petTypes.get(0));
+    	given(this.clinicService.findPetTypeById(1)).willReturn(petTypes.getFirst());
     	this.mockMvc.perform(delete("/api/pettypes/1")
     		.content(newPetTypeAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
         	.andExpect(status().isNoContent());
@@ -240,7 +240,7 @@ class PetTypeRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testDeletePetTypeError() throws Exception {
-    	PetType newPetType = petTypes.get(0);
+    	PetType newPetType = petTypes.getFirst();
     	ObjectMapper mapper = new ObjectMapper();
         String newPetTypeAsJSON = mapper.writeValueAsString(petTypeMapper.toPetTypeDto(newPetType));
     	given(this.clinicService.findPetTypeById(-1)).willReturn(null);

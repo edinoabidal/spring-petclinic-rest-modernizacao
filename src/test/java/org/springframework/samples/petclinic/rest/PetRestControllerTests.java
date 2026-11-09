@@ -106,7 +106,7 @@ class PetRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testGetPetSuccess() throws Exception {
-        given(this.clinicService.findPetById(3)).willReturn(petMapper.toPet(pets.get(0)));
+        given(this.clinicService.findPetById(3)).willReturn(petMapper.toPet(pets.getFirst()));
         this.mockMvc.perform(get("/api/pets/3")
             .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
@@ -154,7 +154,7 @@ class PetRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testCreatePetSuccess() throws Exception {
-        PetDto newPet = pets.get(0);
+        PetDto newPet = pets.getFirst();
         newPet.setId(999);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -170,7 +170,7 @@ class PetRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testCreatePetError() throws Exception {
-        PetDto newPet = pets.get(0);
+        PetDto newPet = pets.getFirst();
         newPet.setId(null);
         newPet.setName(null);
         ObjectMapper mapper = new ObjectMapper();
@@ -186,8 +186,8 @@ class PetRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testUpdatePetSuccess() throws Exception {
-        given(this.clinicService.findPetById(3)).willReturn(petMapper.toPet(pets.get(0)));
-        PetDto newPet = pets.get(0);
+        given(this.clinicService.findPetById(3)).willReturn(petMapper.toPet(pets.getFirst()));
+        PetDto newPet = pets.getFirst();
         newPet.setName("Rosy I");
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -212,7 +212,7 @@ class PetRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testUpdatePetError() throws Exception {
-        PetDto newPet = pets.get(0);
+        PetDto newPet = pets.getFirst();
         newPet.setName(null);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -228,11 +228,11 @@ class PetRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testDeletePetSuccess() throws Exception {
-        PetDto newPet = pets.get(0);
+        PetDto newPet = pets.getFirst();
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         String newPetAsJSON = mapper.writeValueAsString(newPet);
-        given(this.clinicService.findPetById(3)).willReturn(petMapper.toPet(pets.get(0)));
+        given(this.clinicService.findPetById(3)).willReturn(petMapper.toPet(pets.getFirst()));
         this.mockMvc.perform(delete("/api/pets/3")
             .content(newPetAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isNoContent());
@@ -241,7 +241,7 @@ class PetRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testDeletePetError() throws Exception {
-        PetDto newPet = pets.get(0);
+        PetDto newPet = pets.getFirst();
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         String newPetAsJSON = mapper.writeValueAsString(newPet);

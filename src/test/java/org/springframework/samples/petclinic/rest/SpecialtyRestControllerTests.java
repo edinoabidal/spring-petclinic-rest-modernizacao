@@ -90,7 +90,7 @@ class SpecialtyRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testGetSpecialtySuccess() throws Exception {
-    	given(this.clinicService.findSpecialtyById(1)).willReturn(specialties.get(0));
+    	given(this.clinicService.findSpecialtyById(1)).willReturn(specialties.getFirst());
         this.mockMvc.perform(get("/api/specialties/1")
         	.accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
@@ -111,7 +111,7 @@ class SpecialtyRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testGetAllSpecialtysSuccess() throws Exception {
-    	specialties.remove(0);
+    	specialties.removeFirst();
     	given(this.clinicService.findAllSpecialties()).willReturn(specialties);
         this.mockMvc.perform(get("/api/specialties/")
         	.accept(MediaType.APPLICATION_JSON))
@@ -136,7 +136,7 @@ class SpecialtyRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testCreateSpecialtySuccess() throws Exception {
-    	Specialty newSpecialty = specialties.get(0);
+    	Specialty newSpecialty = specialties.getFirst();
     	newSpecialty.setId(999);
     	ObjectMapper mapper = new ObjectMapper();
         String newSpecialtyAsJSON = mapper.writeValueAsString(specialtyMapper.toSpecialtyDto(newSpecialty));
@@ -148,7 +148,7 @@ class SpecialtyRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testCreateSpecialtyError() throws Exception {
-    	Specialty newSpecialty = specialties.get(0);
+    	Specialty newSpecialty = specialties.getFirst();
     	newSpecialty.setId(null);
     	newSpecialty.setName(null);
     	ObjectMapper mapper = new ObjectMapper();
@@ -182,7 +182,7 @@ class SpecialtyRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testUpdateSpecialtyError() throws Exception {
-    	Specialty newSpecialty = specialties.get(0);
+    	Specialty newSpecialty = specialties.getFirst();
     	newSpecialty.setName("");
     	ObjectMapper mapper = new ObjectMapper();
         String newSpecialtyAsJSON = mapper.writeValueAsString(specialtyMapper.toSpecialtyDto(newSpecialty));
@@ -194,10 +194,10 @@ class SpecialtyRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testDeleteSpecialtySuccess() throws Exception {
-    	Specialty newSpecialty = specialties.get(0);
+    	Specialty newSpecialty = specialties.getFirst();
     	ObjectMapper mapper = new ObjectMapper();
         String newSpecialtyAsJSON = mapper.writeValueAsString(specialtyMapper.toSpecialtyDto(newSpecialty));
-    	given(this.clinicService.findSpecialtyById(1)).willReturn(specialties.get(0));
+    	given(this.clinicService.findSpecialtyById(1)).willReturn(specialties.getFirst());
     	this.mockMvc.perform(delete("/api/specialties/1")
     		.content(newSpecialtyAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
         	.andExpect(status().isNoContent());
@@ -206,7 +206,7 @@ class SpecialtyRestControllerTests {
     @Test
     @WithMockUser(roles="VET_ADMIN")
     void testDeleteSpecialtyError() throws Exception {
-    	Specialty newSpecialty = specialties.get(0);
+    	Specialty newSpecialty = specialties.getFirst();
     	ObjectMapper mapper = new ObjectMapper();
         String newSpecialtyAsJSON = mapper.writeValueAsString(specialtyMapper.toSpecialtyDto(newSpecialty));
     	given(this.clinicService.findSpecialtyById(-1)).willReturn(null);

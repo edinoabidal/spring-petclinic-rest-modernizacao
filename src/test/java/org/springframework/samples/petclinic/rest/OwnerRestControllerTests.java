@@ -103,7 +103,7 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testGetOwnerSuccess() throws Exception {
-        given(this.clinicService.findOwnerById(1)).willReturn(ownerMapper.toOwner(owners.get(0)));
+        given(this.clinicService.findOwnerById(1)).willReturn(ownerMapper.toOwner(owners.getFirst()));
         this.mockMvc.perform(get("/api/owners/1")
                 .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
@@ -124,7 +124,7 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testGetOwnersListSuccess() throws Exception {
-        owners.remove(0);
+        owners.removeFirst();
         owners.remove(1);
         given(this.clinicService.findOwnerByLastName("Davis")).willReturn(ownerMapper.toOwners(owners));
         this.mockMvc.perform(get("/api/owners/*/lastname/Davis")
@@ -150,7 +150,7 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testGetAllOwnersSuccess() throws Exception {
-        owners.remove(0);
+        owners.removeFirst();
         owners.remove(1);
         given(this.clinicService.findAllOwners()).willReturn(ownerMapper.toOwners(owners));
         this.mockMvc.perform(get("/api/owners/")
@@ -176,7 +176,7 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testCreateOwnerSuccess() throws Exception {
-        OwnerDto newOwnerDto = owners.get(0);
+        OwnerDto newOwnerDto = owners.getFirst();
         newOwnerDto.setId(null);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -190,7 +190,7 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testCreateOwnerErrorIdSpecified() throws Exception {
-        OwnerDto newOwnerDto = owners.get(0);
+        OwnerDto newOwnerDto = owners.getFirst();
         newOwnerDto.setId(999);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -206,7 +206,7 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testCreateOwnerError() throws Exception {
-        OwnerDto newOwnerDto = owners.get(0);
+        OwnerDto newOwnerDto = owners.getFirst();
         newOwnerDto.setId(null);
         newOwnerDto.setFirstName(null);
         ObjectMapper mapper = new ObjectMapper();
@@ -221,8 +221,8 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testUpdateOwnerSuccess() throws Exception {
-        given(this.clinicService.findOwnerById(1)).willReturn(ownerMapper.toOwner(owners.get(0)));
-        int ownerId = owners.get(0).getId();
+        given(this.clinicService.findOwnerById(1)).willReturn(ownerMapper.toOwner(owners.getFirst()));
+        int ownerId = owners.getFirst().getId();
         OwnerDto updatedOwnerDto = new OwnerDto();
         // body.id = ownerId which is used in url path
         updatedOwnerDto.setId(ownerId);
@@ -252,8 +252,8 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testUpdateOwnerSuccessNoBodyId() throws Exception {
-        given(this.clinicService.findOwnerById(1)).willReturn(ownerMapper.toOwner(owners.get(0)));
-        int ownerId = owners.get(0).getId();
+        given(this.clinicService.findOwnerById(1)).willReturn(ownerMapper.toOwner(owners.getFirst()));
+        int ownerId = owners.getFirst().getId();
         OwnerDto updatedOwnerDto = new OwnerDto();
         updatedOwnerDto.setFirstName("GeorgeI");
         updatedOwnerDto.setLastName("Franklin");
@@ -280,7 +280,7 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testUpdateOwnerErrorBodyIdMismatchWithPathId() throws Exception {
-        int ownerId = owners.get(0).getId();
+        int ownerId = owners.getFirst().getId();
         OwnerDto updatedOwnerDto = new OwnerDto();
         // body.id != ownerId
         updatedOwnerDto.setId(-1);
@@ -301,7 +301,7 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testUpdateOwnerError() throws Exception {
-        OwnerDto newOwnerDto = owners.get(0);
+        OwnerDto newOwnerDto = owners.getFirst();
         newOwnerDto.setFirstName("");
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -314,11 +314,11 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testDeleteOwnerSuccess() throws Exception {
-        OwnerDto newOwnerDto = owners.get(0);
+        OwnerDto newOwnerDto = owners.getFirst();
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         String newOwnerAsJSON = mapper.writeValueAsString(newOwnerDto);
-        final Owner owner = ownerMapper.toOwner(owners.get(0));
+        final Owner owner = ownerMapper.toOwner(owners.getFirst());
         given(this.clinicService.findOwnerById(1)).willReturn(owner);
         this.mockMvc.perform(delete("/api/owners/1")
                 .content(newOwnerAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -328,7 +328,7 @@ class OwnerRestControllerTests {
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
     void testDeleteOwnerError() throws Exception {
-        OwnerDto newOwnerDto = owners.get(0);
+        OwnerDto newOwnerDto = owners.getFirst();
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         String newOwnerAsJSON = mapper.writeValueAsString(newOwnerDto);

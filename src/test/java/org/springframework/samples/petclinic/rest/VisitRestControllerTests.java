@@ -117,7 +117,7 @@ class VisitRestControllerTests {
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
     void testGetVisitSuccess() throws Exception {
-    	given(this.clinicService.findVisitById(2)).willReturn(visits.get(0));
+    	given(this.clinicService.findVisitById(2)).willReturn(visits.getFirst());
         this.mockMvc.perform(get("/api/visits/2")
         	.accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
@@ -162,7 +162,7 @@ class VisitRestControllerTests {
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
     void testCreateVisitSuccess() throws Exception {
-    	Visit newVisit = visits.get(0);
+    	Visit newVisit = visits.getFirst();
     	newVisit.setId(999);
     	ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -176,7 +176,7 @@ class VisitRestControllerTests {
 
     @WithMockUser(roles="OWNER_ADMIN")
     void testCreateVisitError() throws Exception {
-    	Visit newVisit = visits.get(0);
+    	Visit newVisit = visits.getFirst();
     	newVisit.setId(null);
         newVisit.setDescription(null);
     	ObjectMapper mapper = new ObjectMapper();
@@ -189,8 +189,8 @@ class VisitRestControllerTests {
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
     void testUpdateVisitSuccess() throws Exception {
-    	given(this.clinicService.findVisitById(2)).willReturn(visits.get(0));
-    	Visit newVisit = visits.get(0);
+    	given(this.clinicService.findVisitById(2)).willReturn(visits.getFirst());
+    	Visit newVisit = visits.getFirst();
     	newVisit.setDescription("rabies shot test");
     	ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -211,7 +211,7 @@ class VisitRestControllerTests {
 
     @WithMockUser(roles="OWNER_ADMIN")
     void testUpdateVisitError() throws Exception {
-    	Visit newVisit = visits.get(0);
+    	Visit newVisit = visits.getFirst();
         newVisit.setDescription(null);
     	ObjectMapper mapper = new ObjectMapper();
         String newVisitAsJSON = mapper.writeValueAsString(visitMapper.toVisitDto(newVisit));
@@ -223,11 +223,11 @@ class VisitRestControllerTests {
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
     void testDeleteVisitSuccess() throws Exception {
-    	Visit newVisit = visits.get(0);
+    	Visit newVisit = visits.getFirst();
     	ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         String newVisitAsJSON = mapper.writeValueAsString(visitMapper.toVisitDto(newVisit));
-    	given(this.clinicService.findVisitById(2)).willReturn(visits.get(0));
+    	given(this.clinicService.findVisitById(2)).willReturn(visits.getFirst());
     	this.mockMvc.perform(delete("/api/visits/2")
     		.content(newVisitAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
         	.andExpect(status().isNoContent());
@@ -236,7 +236,7 @@ class VisitRestControllerTests {
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
     void testDeleteVisitError() throws Exception {
-    	Visit newVisit = visits.get(0);
+    	Visit newVisit = visits.getFirst();
     	ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         String newVisitAsJSON = mapper.writeValueAsString(visitMapper.toVisitDto(newVisit));
