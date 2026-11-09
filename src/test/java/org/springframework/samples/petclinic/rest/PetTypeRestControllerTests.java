@@ -68,6 +68,7 @@ class PetTypeRestControllerTests {
     void initPetTypes(){
     	this.mockMvc = MockMvcBuilders.standaloneSetup(petTypeRestController)
     			.setControllerAdvice(new ExceptionControllerAdvice())
+            .setUseTrailingSlashPatternMatch(true)
     			.build();
     	petTypes = new ArrayList<PetType>();
 

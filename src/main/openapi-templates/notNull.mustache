@@ -1,0 +1,1 @@
+{{! Same rule as openapi-generator 5.2.1: @NotNull on every required property, readOnly included (7.x skips readOnly ones). }}{{#required}}{{^isNullable}}@NotNull {{/isNullable}}{{/required}}

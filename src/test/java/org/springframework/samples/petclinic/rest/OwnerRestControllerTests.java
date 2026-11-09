@@ -75,6 +75,7 @@ class OwnerRestControllerTests {
     void initOwners() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(ownerRestController)
             .setControllerAdvice(new ExceptionControllerAdvice())
+            .setUseTrailingSlashPatternMatch(true)
             .build();
         owners = new ArrayList<>();
 

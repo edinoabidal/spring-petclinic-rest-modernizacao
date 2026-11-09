@@ -67,6 +67,7 @@ class VetRestControllerTests {
     void initVets(){
     	this.mockMvc = MockMvcBuilders.standaloneSetup(vetRestController)
     			.setControllerAdvice(new ExceptionControllerAdvice())
+            .setUseTrailingSlashPatternMatch(true)
     			.build();
     	vets = new ArrayList<Vet>();
 

@@ -73,6 +73,7 @@ class VisitRestControllerTests {
     void initVisits(){
     	this.mockMvc = MockMvcBuilders.standaloneSetup(visitRestController)
     			.setControllerAdvice(new ExceptionControllerAdvice())
+            .setUseTrailingSlashPatternMatch(true)
     			.build();
 
         visits = new ArrayList<>();

@@ -23,13 +23,12 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!-- Third librairies -->
         <spring-data-jdbc.version>1.2.1.RELEASE</spring-data-jdbc.version>
-        <springfox-swagger.version>3.0.0</springfox-swagger.version>
         <jackson-databind-nullable.version>0.2.1</jackson-databind-nullable.version>
         <mapstruct.version>1.6.3</mapstruct.version>
 
         <!-- Maven plugins -->
         <jacoco.version>0.8.16</jacoco.version>
-        <openapi-generator-maven-plugin.version>5.2.1</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.27.0</openapi-generator-maven-plugin.version>
         <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
 
         <!-- Docker -->
@@ -273,6 +272,8 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/resources/api-docs.yml</inputSpec>
+                            <!-- Keeps the 5.2.1 bean validation: @NotNull also on required readOnly properties -->
+                            <templateDirectory>${project.basedir}/src/main/openapi-templates</templateDirectory>
                             <modelPackage>org.springframework.samples.petclinic.dto</modelPackage>
                             <generatorName>spring</generatorName>
                             <library>spring-boot</library>
@@ -293,6 +294,8 @@
                                 <java8>true</java8>
                                 <openApiNullable>false</openApiNullable>
                                 <serializationLibrary>jackson</serializationLibrary>
+                                <!-- Spring Boot 3: jakarta.* instead of javax.* -->
+                                <useSpringBoot3>true</useSpringBoot3>
                             </configOptions>
                             <!-- override the default library to jersey2 -->
                         </configuration>

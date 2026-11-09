@@ -67,6 +67,7 @@ class SpecialtyRestControllerTests {
     void initSpecialtys(){
     	this.mockMvc = MockMvcBuilders.standaloneSetup(specialtyRestController)
     			.setControllerAdvice(new ExceptionControllerAdvice())
+            .setUseTrailingSlashPatternMatch(true)
     			.build();
     	specialties = new ArrayList<Specialty>();
 

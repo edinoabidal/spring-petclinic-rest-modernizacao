@@ -39,7 +39,8 @@ class UserRestControllerTests {
     @BeforeEach
     void initVets() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userRestController)
-            .setControllerAdvice(new ExceptionControllerAdvice()).build();
+            .setControllerAdvice(new ExceptionControllerAdvice())
+            .setUseTrailingSlashPatternMatch(true).build();
     }
 
     @Test
